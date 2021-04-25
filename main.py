@@ -22,7 +22,7 @@ email_destinatario = os.environ.get('EMAIL_DESTINATARIO')
 
 smtp_server = 'smtp.gmail.com'
 porta = 587
-hora_inicio = str((datetime.date.today()).strftime("%d/%m/%Y"))
+data_inicio = str((datetime.date.today()).strftime("%d/%m/%Y"))
 
 def envia_email(assunto_email, msg_email, envio_resposta='envio'):
 
@@ -56,7 +56,7 @@ def consulta_email():
         mail = imaplib.IMAP4_SSL(smtp_server)
         mail.login(email_remetente, password_remetente)
         mail.select('inbox')
-        dados = mail.search(None, 'SUBJECT', f'Agendamento@de@Academia:@{hora_inicio}') # RFC822 @ Entra no lugar do Espaço
+        dados = mail.search(None, 'SUBJECT', f'Agendamento@de@Academia:@{data_inicio}') # RFC822 @ Entra no lugar do Espaço
         lista_ids = str(dados[1]).replace("[b'",'')
         lista_ids = str(lista_ids).split(' ')
 
@@ -75,21 +75,21 @@ def consulta_email():
         return print('Exception na tentativa de consultar o Email')
 
 
-assunto_email = f'Agendamento de Academia: {hora_inicio}'
+assunto_email = f'Agendamento de Academia: {data_inicio}'
 msg_email = 'Deseja agendar a academia hoje?'
 print('enviando email')
 envia_email(assunto_email, msg_email)
 
-agora = hora_inicio
+agora = data_inicio
 
-while hora_inicio == agora:
+while data_inicio == agora:
     logging.info('Disparando consulta_email()')
     retorno = consulta_email()
     logging.info(f'Retorno:{retorno}')
     if retorno == 'sim':
         logging.info('Chamando função "agenda_academia()"')
         try:
-            agenda_academia(p_data='25/04/2021', p_horario='10:00 - 11:00')
+            agenda_academia(p_data=data_inicio, p_horario='10:00 - 11:00')
         except Exception as e:
             logging.warning(f'{e}')
             exit()
