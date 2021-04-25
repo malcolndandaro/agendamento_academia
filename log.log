@@ -1,0 +1,82 @@
+25/04/2021 12:24:06 INFO: Disparando consulta_email()
+25/04/2021 12:24:07 INFO: Retorno:sim
+25/04/2021 12:24:07 INFO: Chamando função "agenda_academia()"
+25/04/2021 12:24:08 DEBUG: POST http://127.0.0.1:7104/session {"capabilities": {"firstMatch": [{}], "alwaysMatch": {"browserName": "chrome", "platformName": "any", "goog:chromeOptions": {"extensions": [], "args": ["--headless"]}}}, "desiredCapabilities": {"browserName": "chrome", "version": "", "platform": "ANY", "goog:chromeOptions": {"extensions": [], "args": ["--headless"]}}}
+25/04/2021 12:24:08 DEBUG: Starting new HTTP connection (1): 127.0.0.1:7104
+25/04/2021 12:24:08 DEBUG: http://127.0.0.1:7104 "POST /session HTTP/1.1" 200 752
+25/04/2021 12:24:08 DEBUG: Finished Request
+25/04/2021 12:24:08 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/url {"url": "https://www.formulaacademia.com.br/cliente/treinos"}
+25/04/2021 12:24:10 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/url HTTP/1.1" 200 14
+25/04/2021 12:24:10 DEBUG: Finished Request
+25/04/2021 12:24:10 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/window/maximize {}
+25/04/2021 12:24:10 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/window/maximize HTTP/1.1" 200 48
+25/04/2021 12:24:10 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "css selector", "value": "body > div > div > a"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 200 88
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/cef61e69-a286-40fe-8fc7-a3e336a17b81/click {"id": "cef61e69-a286-40fe-8fc7-a3e336a17b81"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/cef61e69-a286-40fe-8fc7-a3e336a17b81/click HTTP/1.1" 200 14
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "css selector", "value": "[id=\"login-email\"]"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 200 88
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/bed2968d-4932-4690-af22-ec76554557d2/value {"text": "dmalcoln@gmail.com", "value": ["d", "m", "a", "l", "c", "o", "l", "n", "@", "g", "m", "a", "i", "l", ".", "c", "o", "m"], "id": "bed2968d-4932-4690-af22-ec76554557d2"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/bed2968d-4932-4690-af22-ec76554557d2/value HTTP/1.1" 200 14
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "css selector", "value": "[id=\"login-password\"]"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 200 88
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/056dd0a7-35c9-43f8-a027-4faa5eb13de1/value {"text": "225628", "value": ["2", "2", "5", "6", "2", "8"], "id": "056dd0a7-35c9-43f8-a027-4faa5eb13de1"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/056dd0a7-35c9-43f8-a027-4faa5eb13de1/value HTTP/1.1" 200 14
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: GET http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/screenshot {}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "GET /session/8828e87c007d3d90c99f60961d42daaa/screenshot HTTP/1.1" 200 37408
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "css selector", "value": "[id=\"login-confirm\"]"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 200 88
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:15 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/7c0e90ff-940a-4d8a-82ff-f41c932a44e2/click {"id": "7c0e90ff-940a-4d8a-82ff-f41c932a44e2"}
+25/04/2021 12:24:15 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/7c0e90ff-940a-4d8a-82ff-f41c932a44e2/click HTTP/1.1" 200 14
+25/04/2021 12:24:15 DEBUG: Finished Request
+25/04/2021 12:24:20 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/url {"url": "https://www.formulaacademia.com.br/cliente/agendamentos"}
+25/04/2021 12:24:21 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/url HTTP/1.1" 200 14
+25/04/2021 12:24:21 DEBUG: Finished Request
+25/04/2021 12:24:26 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "css selector", "value": "body > app-root > ng-component > app-schedules-list > div > div > div.btn-container.text-center.pt-4.ng-star-inserted > button"}
+25/04/2021 12:24:26 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 200 88
+25/04/2021 12:24:26 DEBUG: Finished Request
+25/04/2021 12:24:26 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/af35090e-b971-4dc9-b487-e68b2f15415e/click {"id": "af35090e-b971-4dc9-b487-e68b2f15415e"}
+25/04/2021 12:24:26 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/af35090e-b971-4dc9-b487-e68b2f15415e/click HTTP/1.1" 200 14
+25/04/2021 12:24:26 DEBUG: Finished Request
+25/04/2021 12:24:31 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "css selector", "value": "body > app-root > ng-component > app-schedules-create > main > div > form > div:nth-child(3) > div > input"}
+25/04/2021 12:24:31 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 200 88
+25/04/2021 12:24:31 DEBUG: Finished Request
+25/04/2021 12:24:31 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/4d8af36c-740d-4fc9-8194-ccba7ae465d4/click {"id": "4d8af36c-740d-4fc9-8194-ccba7ae465d4"}
+25/04/2021 12:24:31 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/4d8af36c-740d-4fc9-8194-ccba7ae465d4/click HTTP/1.1" 200 14
+25/04/2021 12:24:31 DEBUG: Finished Request
+25/04/2021 12:24:32 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "xpath", "value": "//*[contains(text(), \"SP - Ribeir\u00e3o Preto\")]"}
+25/04/2021 12:24:32 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 200 88
+25/04/2021 12:24:32 DEBUG: Finished Request
+25/04/2021 12:24:32 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/c9c5b81f-d0bb-4a32-9118-6e56ec298d4f/click {"id": "c9c5b81f-d0bb-4a32-9118-6e56ec298d4f"}
+25/04/2021 12:24:32 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/c9c5b81f-d0bb-4a32-9118-6e56ec298d4f/click HTTP/1.1" 200 14
+25/04/2021 12:24:32 DEBUG: Finished Request
+25/04/2021 12:24:33 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/elements {"using": "css selector", "value": "ng-select"}
+25/04/2021 12:24:33 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/elements HTTP/1.1" 200 169
+25/04/2021 12:24:33 DEBUG: Finished Request
+25/04/2021 12:24:33 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/6e3e969a-e116-44e1-a864-ae181daa307e/elements {"using": "css selector", "value": "span", "id": "6e3e969a-e116-44e1-a864-ae181daa307e"}
+25/04/2021 12:24:33 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/6e3e969a-e116-44e1-a864-ae181daa307e/elements HTTP/1.1" 200 169
+25/04/2021 12:24:33 DEBUG: Finished Request
+25/04/2021 12:24:33 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element/bdd8dbd5-9dfc-4c9e-80d2-000bc86b699b/click {"id": "bdd8dbd5-9dfc-4c9e-80d2-000bc86b699b"}
+25/04/2021 12:24:33 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element/bdd8dbd5-9dfc-4c9e-80d2-000bc86b699b/click HTTP/1.1" 200 14
+25/04/2021 12:24:33 DEBUG: Finished Request
+25/04/2021 12:24:34 DEBUG: POST http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/element {"using": "xpath", "value": "//*[contains(text(), \"25/04/2021\")]"}
+25/04/2021 12:24:34 DEBUG: http://127.0.0.1:7104 "POST /session/8828e87c007d3d90c99f60961d42daaa/element HTTP/1.1" 404 1054
+25/04/2021 12:24:34 DEBUG: Finished Request
+25/04/2021 12:24:34 DEBUG: GET http://127.0.0.1:7104/session/8828e87c007d3d90c99f60961d42daaa/screenshot {}
+25/04/2021 12:24:34 DEBUG: http://127.0.0.1:7104 "GET /session/8828e87c007d3d90c99f60961d42daaa/screenshot HTTP/1.1" 200 136176
+25/04/2021 12:24:34 DEBUG: Finished Request
+25/04/2021 12:24:34 WARNING: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//*[contains(text(), "25/04/2021")]"}
+  (Session info: headless chrome=90.0.4430.85)
+
+25/04/2021 12:24:34 WARNING: Message: no such element: Unable to locate element: {"method":"xpath","selector":"//*[contains(text(), "25/04/2021")]"}
+  (Session info: headless chrome=90.0.4430.85)
+

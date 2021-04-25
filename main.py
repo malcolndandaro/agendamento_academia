@@ -1,100 +1,103 @@
-# Imports
-from selenium import webdriver
+import datetime
+import smtplib
+import email.utils
+import imaplib
+import email
 import time
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from Agendador import agenda_academia
 import os
+import logging
 
-# Chrome
-#chrome_options = Options()
-#chrome_options.add_argument("--headless")
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s',
+                    datefmt='%d/%m/%Y %H:%M:%S', filename='C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\log.log', encoding='utf-8')
 
-email = os.environ.get('LOGIN_ACADEMIA')
-password = os.environ.get('PASSWORD_ACADEMIA')
-cidade = 'SP - Ribeirão Preto'
-data = '25/04/2021'
-horario = '10:00 - 11:00'
 
-def agenda_academia(p_email=email, p_password=password, p_cidade=cidade, p_data=data, p_horario=horario ):
-    navegador = webdriver.Chrome(executable_path='driver/chromedriver.exe')#, options=chrome_options)
 
-    # Entrando no site
-    navegador.get("https://www.formulaacademia.com.br/cliente/treinos")
-    navegador.maximize_window()
-    time.sleep(5)
-    # Aceitando os Cookies
+email_remetente = os.environ.get('EMAIL_REMETENTE')
+password_remetente = os.environ.get('PASSWORD_REMETENTE')
+email_destinatario = os.environ.get('EMAIL_DESTINATARIO')
 
-    botao_cookies = navegador.find_element_by_css_selector('body > div > div > a')
-    botao_cookies.click()
+smtp_server = 'smtp.gmail.com'
+porta = 587
+hora_inicio = str((datetime.date.today()).strftime("%d/%m/%Y"))
 
-    # Interagindo com os campoos
-    campo_email = navegador.find_element_by_id('login-email')
-    campo_email.send_keys(p_email)
+def envia_email(assunto_email, msg_email, envio_resposta='envio'):
 
-    campo_password = navegador.find_element_by_id('login-password')
-    campo_password.send_keys(p_password)
+    recipients = [email_destinatario]
+    cc = [email_destinatario]
+    recipientes_cc = [email_destinatario]
 
-    # Clicando no botao "Entrar"
-    botao_entrar = navegador.find_element_by_id('login-confirm')
-    botao_entrar.click()
-    time.sleep(5)
+    msg = MIMEMultipart()
+    msg['From'] = email_remetente
+    msg['To'] = ", ".join(recipients)
+    msg['Cc'] = ", ".join(cc)
+    msg['Subject'] = (str(assunto_email))
+    msg['Message-ID'] = email.utils.make_msgid()
 
-    navegador.get('https://www.formulaacademia.com.br/cliente/agendamentos')
-    time.sleep(5)
+    body = msg_email
+    msg.attach(MIMEText(body, 'plain'))
+    if envio_resposta == 'resposta':
+        img_data = open("C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\Confirmacao.png", 'rb').read()
+        image = MIMEImage(img_data, name='Confirmacao.png')
+        msg.attach(image)
+    server = smtplib.SMTP(smtp_server, porta)
+    server.starttls()
+    server.login(email_remetente, password_remetente)
+    text = msg.as_string()
+    server.sendmail(email_remetente, recipientes_cc, text)
+    server.quit()
 
-    # Clicando no botao "Novo Horario"
+
+def consulta_email():
     try:
-        botao_novo_horario = navegador.find_element_by_css_selector('body > app-root > ng-component > app-schedules-list > div > div > div.btn-container.text-center.pt-4.ng-star-inserted > button')
-        botao_novo_horario.click()
-    except:
-        botao_novo_horario = navegador.find_element_by_id('empty-button')
-        botao_novo_horario.click()
+        mail = imaplib.IMAP4_SSL(smtp_server)
+        mail.login(email_remetente, password_remetente)
+        mail.select('inbox')
+        dados = mail.search(None, 'SUBJECT', f'Agendamento@de@Academia:@{hora_inicio}') # RFC822 @ Entra no lugar do Espaço
+        lista_ids = str(dados[1]).replace("[b'",'')
+        lista_ids = str(lista_ids).split(' ')
+
+        for id in lista_ids[-1]:
+            status, dados = mail.fetch(str(id), '(RFC822)')  # i is the email id
+            msg = email.message_from_bytes(dados[0][1])
+            body = msg.get_payload()[0]
+            if str(body).find('sim') >= 1:
+                return 'sim'
+            elif str(body).find('nao') >= 1:
+                return 'nao'
+            else:
+                return 'Nao foi possivel localizar'
+    except Exception as e:
+        print(e)
+        return print('Exception na tentativa de consultar o Email')
 
 
-    # Pesquisando a academia
-    time.sleep(5)
-    pesquisa_academia = navegador.find_element_by_css_selector('body > app-root > ng-component > app-schedules-create > main > div > form > div:nth-child(3) > div > input')
-    pesquisa_academia.click()
+assunto_email = f'Agendamento de Academia: {hora_inicio}'
+msg_email = 'Deseja agendar a academia hoje?'
+print('enviando email')
+envia_email(assunto_email, msg_email)
 
-    time.sleep(1)
-    # Escolhendo Ribeirão Preto
-    ribeirao_preto = navegador.find_element_by_xpath(f'//*[contains(text(), "{p_cidade}")]')
-    ribeirao_preto.click()
-    time.sleep(1)
+agora = hora_inicio
 
-    # Escolhendo a data
-
-    campos_data_e_hora = navegador.find_elements_by_tag_name('ng-select')
-    campo_data = campos_data_e_hora[0]
-    campo_data = campo_data.find_elements_by_tag_name('span')[0]
-    campo_data.click()
-    time.sleep(1)
-    opcao_data_agendamento = navegador.find_element_by_xpath(f'//*[contains(text(), "{p_data}")]')
-    opcao_data_agendamento.click()
-
-
-    # Escolhendo a Hora
-
-    hora = campos_data_e_hora[1]
-    campo_hora = hora.find_elements_by_tag_name('span')[0]
-    campo_hora.click()
-    opcao_horario_agendamento = navegador.find_element_by_xpath(f'//*[contains(text(), "{p_horario}")]')
-    opcao_horario_agendamento.click()
-    time.sleep(1)
-
-    # Selecionando o botao "Agendar"
-
-    form = navegador.find_element_by_tag_name('form')
-    botao_agendar = form.find_elements_by_tag_name('button')[1]
-    print('clicando')
-    botao_agendar.click()
-    time.sleep(2)
-
-    # Clicando no botao "SIM" da Popup "Agendar Horario"
-
-    botao_sim = navegador.find_element_by_css_selector('body > app-root > app-modal-confirm > div > div > div > div.modal-footer > button.btn.btn-primary.col')
-    botao_sim.click()
-    time.sleep(5)
-    botao_ok = navegador.find_element_by_css_selector('body > app-root > app-modal-confirm > div > div > div > div.modal-footer > button')
-    botao_ok.click()
-    time.sleep(2)
-    navegador.save_screenshot('Confirmacao.png')
-    navegador.close()
+while hora_inicio == agora:
+    logging.info('Disparando consulta_email()')
+    retorno = consulta_email()
+    logging.info(f'Retorno:{retorno}')
+    if retorno == 'sim':
+        logging.info('Chamando função "agenda_academia()"')
+        try:
+            agenda_academia(p_data='25/04/2021', p_horario='10:00 - 11:00')
+        except Exception as e:
+            logging.warning(f'{e}')
+            exit()
+        else:
+            logging.info('Enviando email de confirmação')
+            envia_email('Agendamento Confirmado', 'Agendamento confirmado com sucesso', 'resposta')
+            exit()
+    else:
+        logging.info('Aguardando para consultar novamente o status do retorno')
+        time.sleep(30)
+        agora = str((datetime.date.today()).strftime("%d/%m/%Y"))
