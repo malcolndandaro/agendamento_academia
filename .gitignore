@@ -1,5 +1,7 @@
-
 *.xml
 *.idea
 *.pyc
 *.log
+__pycache__/
+__pycache__
+__pycache__/Agendador.cpython-39.pyc

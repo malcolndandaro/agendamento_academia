@@ -11,27 +11,28 @@ from Agendador import agenda_academia
 import os
 import logging
 
+# Log
+path = os.getcwd()
+path_log= f'{path}/log.log'
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s',
-                    datefmt='%d/%m/%Y %H:%M:%S', filename='C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\log.log', encoding='utf-8')
+                    datefmt='%d/%m/%Y %H:%M:%S', filename=f'{path_log}', encoding='utf-8')
 
 
-
-email_remetente = os.environ.get('EMAIL_REMETENTE')
-password_remetente = os.environ.get('PASSWORD_REMETENTE')
-email_destinatario = os.environ.get('EMAIL_DESTINATARIO')
-
-smtp_server = 'smtp.gmail.com'
-porta = 587
-data_inicio = str((datetime.date.today()).strftime("%d/%m/%Y"))
+EMAIL_REMETENTE = os.environ.get('EMAIL_REMETENTE')
+PASSWORD_REMETENTE = os.environ.get('PASSWORD_REMETENTE')
+EMAIL_DESTINATARIO = os.environ.get('EMAIL_DESTINATARIO')
+SMTP_SERVER = 'smtp.gmail.com'
+PORTA = 587
+DATA_INICIO = str((datetime.date.today()).strftime("%d/%m/%Y"))
 
 def envia_email(assunto_email, msg_email, envio_resposta='envio'):
 
-    recipients = [email_destinatario]
-    cc = [email_destinatario]
-    recipientes_cc = [email_destinatario]
+    recipients = [EMAIL_DESTINATARIO]
+    cc = [EMAIL_DESTINATARIO]
+    recipientes_cc = [EMAIL_DESTINATARIO]
 
     msg = MIMEMultipart()
-    msg['From'] = email_remetente
+    msg['From'] = EMAIL_REMETENTE
     msg['To'] = ", ".join(recipients)
     msg['Cc'] = ", ".join(cc)
     msg['Subject'] = (str(assunto_email))
@@ -40,23 +41,23 @@ def envia_email(assunto_email, msg_email, envio_resposta='envio'):
     body = msg_email
     msg.attach(MIMEText(body, 'plain'))
     if envio_resposta == 'resposta':
-        img_data = open("C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\Confirmacao.png", 'rb').read()
+        img_data = open(f'{path}/screenshots/Confirmacao.png', 'rb').read()
         image = MIMEImage(img_data, name='Confirmacao.png')
         msg.attach(image)
-    server = smtplib.SMTP(smtp_server, porta)
+    server = smtplib.SMTP(SMTP_SERVER, PORTA)
     server.starttls()
-    server.login(email_remetente, password_remetente)
+    server.login(EMAIL_REMETENTE, PASSWORD_REMETENTE)
     text = msg.as_string()
-    server.sendmail(email_remetente, recipientes_cc, text)
+    server.sendmail(EMAIL_REMETENTE, recipientes_cc, text)
     server.quit()
 
 
 def consulta_email():
     try:
-        mail = imaplib.IMAP4_SSL(smtp_server)
-        mail.login(email_remetente, password_remetente)
+        mail = imaplib.IMAP4_SSL(SMTP_SERVER)
+        mail.login(EMAIL_REMETENTE, PASSWORD_REMETENTE)
         mail.select('inbox')
-        dados = mail.search(None, 'SUBJECT', f'Agendamento@de@Academia:@{data_inicio}') # RFC822 @ Entra no lugar do Espaço
+        dados = mail.search(None, 'SUBJECT', f'Agendamento@de@Academia:@{DATA_INICIO}') # RFC822 @ Entra no lugar do Espaço
         lista_ids = str(dados[1]).replace("[b'",'')
         lista_ids = str(lista_ids).split(' ')
 
@@ -75,29 +76,35 @@ def consulta_email():
         return print('Exception na tentativa de consultar o Email')
 
 
-assunto_email = f'Agendamento de Academia: {data_inicio}'
-msg_email = 'Deseja agendar a academia hoje?'
-print('enviando email')
-envia_email(assunto_email, msg_email)
 
-agora = data_inicio
+def main():
+    assunto_email = f'Agendamento de Academia: {DATA_INICIO}'
+    msg_email = 'Deseja agendar a academia hoje?'
+    print('enviando email')
+    envia_email(assunto_email, msg_email)
 
-while data_inicio == agora:
-    logging.info('Disparando consulta_email()')
-    retorno = consulta_email()
-    logging.info(f'Retorno:{retorno}')
-    if retorno == 'sim':
-        logging.info('Chamando função "agenda_academia()"')
-        try:
-            agenda_academia(p_data=data_inicio, p_horario='10:00 - 11:00')
-        except Exception as e:
-            logging.warning(f'{e}')
-            exit()
+    agora = DATA_INICIO
+
+    while DATA_INICIO == agora:
+        logging.info('Disparando consulta_email()')
+        retorno = consulta_email()
+        logging.info(f'Retorno:{retorno}')
+        if retorno == 'sim':
+            logging.info('Chamando função "agenda_academia()"')
+            try:
+                agenda_academia(p_data=DATA_INICIO, p_horario='10:00 - 11:00')
+            except Exception as e:
+                logging.warning(f'{e}')
+                exit()
+            else:
+                logging.info('Enviando email de confirmação')
+                envia_email('Agendamento Confirmado', 'Agendamento confirmado com sucesso', 'resposta')
+                exit()
         else:
-            logging.info('Enviando email de confirmação')
-            envia_email('Agendamento Confirmado', 'Agendamento confirmado com sucesso', 'resposta')
-            exit()
-    else:
-        logging.info('Aguardando para consultar novamente o status do retorno')
-        time.sleep(30)
-        agora = str((datetime.date.today()).strftime("%d/%m/%Y"))
+            logging.info('Aguardando para consultar novamente o status do retorno')
+            time.sleep(30)
+            agora = str((datetime.date.today()).strftime("%d/%m/%Y"))
+
+
+if __name__=='__main__':
+    main()

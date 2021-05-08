@@ -1,21 +1,28 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 import time
 import os
 import logging
 
+
+# Log
+path = os.getcwd()
+path_log= f'{path}/log.log'
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s',
-                    datefmt='%d/%m/%Y %H:%M:%S', filename='C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\log.log', encoding='utf-8')
+                    datefmt='%d/%m/%Y %H:%M:%S', filename=f'{path_log}', encoding='utf-8')
+
+
 
 # Default values
-email = os.environ.get('LOGIN_ACADEMIA')
-password = os.environ.get('PASSWORD_ACADEMIA')
+EMAIL = os.environ.get('LOGIN_ACADEMIA')
+PASSWORD = os.environ.get('PASSWORD_ACADEMIA')
 cidade = 'SP - Ribeirão Preto'
 data = '25/04/2021'
 horario = '10:00 - 11:00'
 
 
-def agenda_academia(p_email=email, p_password=password, p_cidade=cidade,
+def agenda_academia(p_email=EMAIL, p_password=PASSWORD, p_cidade=cidade,
                     p_data=data, p_horario=horario):
     """ Utiliza o Selenium para navegadar no site da academia.
 
@@ -34,7 +41,7 @@ def agenda_academia(p_email=email, p_password=password, p_cidade=cidade,
     # Parametros do Selenium
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    navegador = webdriver.Chrome(executable_path="C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\driver\\chromedriver.exe", options=chrome_options)
+    navegador = webdriver.Chrome(executable_path=f'{path}/driver/chromedriver.exe', options=chrome_options)
 
 
     # Entrando no site
@@ -52,7 +59,7 @@ def agenda_academia(p_email=email, p_password=password, p_cidade=cidade,
     campo_email.send_keys(p_email)
     campo_password = navegador.find_element_by_id('login-password')
     campo_password.send_keys(p_password)
-    navegador.save_screenshot("C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\screenshot_teste.png")
+    navegador.save_screenshot(f'{path}/screenshots/screenshot_teste.png')
 
 
     # Clicando no botao "Entrar"
@@ -112,10 +119,13 @@ def agenda_academia(p_email=email, p_password=password, p_cidade=cidade,
         botao_ok = navegador.find_element_by_css_selector('body > app-root > app-modal-confirm > div > div > div > div.modal-footer > button')
         botao_ok.click()
         time.sleep(2)
-        navegador.save_screenshot("C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\Confirmacao.png")
+        # Aperta o PAGE_DOWN 3 vezes para melhorar a screenshot
+        for i in range(2):
+            navegador.find_element_by_tag_name('body').send_keys(Keys.PAGE_DOWN)
+        navegador.save_screenshot(f'{path}/screenshots/Confirmacao.png')
         navegador.close()
     except Exception as e:
-        navegador.save_screenshot("C:\\Users\\Malcoln\\Desktop\\agendamento_academia\\Exception.png")
+        navegador.save_screenshot(f'{path}/screenshots/Exception.png')
         logging.warning(f'{e}')
         raise
         
