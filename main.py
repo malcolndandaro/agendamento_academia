@@ -44,6 +44,10 @@ def envia_email(assunto_email, msg_email, envio_resposta='envio'):
         img_data = open(f'{path}/screenshots/Confirmacao.png', 'rb').read()
         image = MIMEImage(img_data, name='Confirmacao.png')
         msg.attach(image)
+    elif envio_resposta == 'erro':
+        img_data = open(f'{path}/screenshots/Exception.png', 'rb').read()
+        image = MIMEImage(img_data, name='Exception.png')
+        msg.attach(image)
     server = smtplib.SMTP(SMTP_SERVER, PORTA)
     server.starttls()
     server.login(EMAIL_REMETENTE, PASSWORD_REMETENTE)
@@ -75,26 +79,28 @@ def consulta_email():
         print(e)
         return print('Exception na tentativa de consultar o Email')
 
-
-
 def main():
     assunto_email = f'Agendamento de Academia: {DATA_INICIO}'
     msg_email = 'Deseja agendar a academia hoje?'
     print('enviando email')
     envia_email(assunto_email, msg_email)
 
-    agora = DATA_INICIO
+    hoje = DATA_INICIO
+    horario = '10:00 - 11:00'
 
-    while DATA_INICIO == agora:
+    # A verificação do While é para verificar se o dia ainda é o mesmo.
+    # Pode acontencer de o email não ser respondido
+    while DATA_INICIO == hoje:
         logging.info('Disparando consulta_email()')
         retorno = consulta_email()
         logging.info(f'Retorno:{retorno}')
         if retorno == 'sim':
             logging.info('Chamando função "agenda_academia()"')
             try:
-                agenda_academia(p_data=DATA_INICIO, p_horario='10:00 - 11:00')
+                agenda_academia(p_data=DATA_INICIO, p_horario=horario)
             except Exception as e:
                 logging.warning(f'{e}')
+                envia_email('Erro no agendamento', 'Erro no agendamento', 'erro')
                 exit()
             else:
                 logging.info('Enviando email de confirmação')
@@ -103,7 +109,7 @@ def main():
         else:
             logging.info('Aguardando para consultar novamente o status do retorno')
             time.sleep(30)
-            agora = str((datetime.date.today()).strftime("%d/%m/%Y"))
+            hoje = str((datetime.date.today()).strftime("%d/%m/%Y"))
 
 
 if __name__=='__main__':
